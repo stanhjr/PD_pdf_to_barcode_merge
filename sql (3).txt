@@ -1,0 +1,80 @@
+﻿\! chcp 1251 - меняем кодировку шелла на win1251
+в свойствах окна шелла меняем шрифт на Lucida Console
+
+
+CREATE DATABASE stanbase
+
+\c stanbase
+
+CREATE TABLE phone_book (
+id BIGSERIAL,
+first_name VARCHAR (50) NOT NULL,
+last_name VARCHAR (50) NOT NULL,
+phone_number(25) NOT NULL);
+
+\d phone_book
+
+INSERT INTO phone_book (first_name, last_name, phone_number) VALUES ('Stan', 'Osichniuk', '380957516200');
+INSERT INTO phone_book (first_name, last_name, phone_number) VALUES ('Elena', 'Brikalova', '3809575152210');
+INSERT INTO phone_book (first_name, last_name, phone_number) VALUES ('Serhey', 'Pokatilov', '380673002557');
+
+SELECT * FROM phone_book;
+
+
+
+Предлагаю следующее решение:
+1. я уже сделал скрипт на python (этот скрипт умеет генерировать штрихкод (в джейпег) и размещать его в норвом документе pdf в указанно месте, сделаю чтобы перезаписывал файл)
+2. цепляемся к нужным таблицам в microsoft SQL (нужен будет пользователь с правами на чтение)
+3. раз в какое то время (5 сек, 5 мин, раз в час ) пусть скрипт выгружает себе выборку и прозводит свои манипуляции используя номер строки (я так понимаю, она автоматически генерируется) и путь к файлу.
+4. Скрипт перезаписывает pdf, профит)
+
+Это основная идея, которая мне кажется вполне себе реализуема, далее детали можно уже обсуждать и внедрять
+
+
+
+cursor.execute(
+        """
+        INSERT INTO test_pdf (barcode, path) VALUES ('0103000168988', 'D:/python/01-13582/gibka_alum.pdf');
+        INSERT INTO test_pdf (barcode, path) VALUES ('0100010164587', 'D:/python/01-13582/gibka_cassets.pdf');
+        INSERT INTO test_pdf (barcode, path) VALUES ('0100100164586','D:/python/01-13582/gibka_podshivi.pdf');
+        INSERT INTO test_pdf (barcode, path) VALUES ('0100370164585','D:/python/01-13582/gibka_portal.pdf');
+        INSERT INTO test_pdf (barcode, path) VALUES ('0123020164584','D:/python/01-13582/zacep_alum.pdf');
+        INSERT INTO test_pdf (barcode, path) VALUES ('0101010177583','D:/python/01-13582/cassets_svarka.pdf');
+        INSERT INTO test_pdf (barcode, path) VALUES ('0102000854582','D:/python/01-13582/frezer_window.pdf');
+        INSERT INTO test_pdf (barcode, path) VALUES ('0100600564581','D:/python/01-13582/frezer_portal.pdf');
+        """
+    )
+
+        INSERT INTO test_pdf (barcode, path) VALUES ('0203000168988', 'D:/python/01-13582/gibka_alum1.pdf');
+        INSERT INTO test_pdf (barcode, path) VALUES ('0200010164587', 'D:/python/01-13582/gibka_cassets1.pdf');
+        INSERT INTO test_pdf (barcode, path) VALUES ('0200100164586','D:/python/01-13582/gibka_podshivi1.pdf');
+        INSERT INTO test_pdf (barcode, path) VALUES ('0200370164585','D:/python/01-13582/gibka_portal1.pdf');
+        INSERT INTO test_pdf (barcode, path) VALUES ('0223020164584','D:/python/01-13582/zacep_alum1.pdf');
+        INSERT INTO test_pdf (barcode, path) VALUES ('0201010177583','D:/python/01-13582/cassets_svarka1.pdf');
+        INSERT INTO test_pdf (barcode, path) VALUES ('0202000854582','D:/python/01-13582/frezer_window1.pdf');
+        INSERT INTO test_pdf (barcode, path) VALUES ('0200600564581','D:/python/01-13582/frezer_portal1.pdf');
+
+
+        INSERT INTO test_pdf (barcode, path) VALUES ('0203050168988', 'D:/python/01-13582/gibka_alum2.pdf');
+        INSERT INTO test_pdf (barcode, path) VALUES ('0200016164587', 'D:/python/01-13582/gibka_cassets2.pdf');
+        INSERT INTO test_pdf (barcode, path) VALUES ('0200103164586','D:/python/01-13582/gibka_podshivi2.pdf');
+        INSERT INTO test_pdf (barcode, path) VALUES ('0200378164585','D:/python/01-13582/gibka_portal2.pdf');
+        INSERT INTO test_pdf (barcode, path) VALUES ('0223022164584','D:/python/01-13582/zacep_alum2.pdf');
+        INSERT INTO test_pdf (barcode, path) VALUES ('0201012177583','D:/python/01-13582/cassets_svarka2.pdf');
+        INSERT INTO test_pdf (barcode, path) VALUES ('0202700854582','D:/python/01-13582/frezer_window2.pdf');
+        INSERT INTO test_pdf (barcode, path) VALUES ('0200680564581','D:/python/01-13582/frezer_portal2.pdf');
+        INSERT INTO test_pdf (barcode, path) VALUES ('3203050168988', 'D:/python/01-13582/gibka_alum3.pdf');
+        INSERT INTO test_pdf (barcode, path) VALUES ('1200016164587', 'D:/python/01-13582/gibka_cassets3.pdf');
+        INSERT INTO test_pdf (barcode, path) VALUES ('2200103164586','D:/python/01-13582/gibka_podshivi3.pdf');
+        INSERT INTO test_pdf (barcode, path) VALUES ('4200378164585','D:/python/01-13582/gibka_portal3.pdf');
+        INSERT INTO test_pdf (barcode, path) VALUES ('225022164584','D:/python/01-13582/zacep_alum3.pdf');
+        INSERT INTO test_pdf (barcode, path) VALUES ('3201012177583','D:/python/01-13582/cassets_svarka3.pdf');
+        INSERT INTO test_pdf (barcode, path) VALUES ('6202700854582','D:/python/01-13582/frezer_window3.pdf');
+        INSERT INTO test_pdf (barcode, path) VALUES ('8200680564581','D:/python/01-13582/frezer_portal4.pdf');
+
+
+
+
+CREATE TABLE test_pdf(
+      id BIGSERIAL, barcode VARCHAR(15), path TEXT);
+      """
